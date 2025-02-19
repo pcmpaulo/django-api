@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+import sys
 from dotenv import load_dotenv
 
 load_dotenv(os.environ.get('ENVIRONMENT'))
@@ -79,11 +80,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# database_password = os.environ.get('POSTGRES_PASSWORD', 'admin')
-# database_username = os.environ.get('POSTGRES_USER', 'admin')
-# database_name =
-# database_host =
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -95,9 +91,15 @@ DATABASES = {
         # sqlite config:
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3'
     }
 }
 
+if ('test' or 'test_coverage') in str(sys.argv): # Run with sqlite if is a test
+    DATABASES['default'] = DATABASES['test']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

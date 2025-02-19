@@ -9,4 +9,19 @@ install-dependencies-dev:
 	pip install -r "./requirements/dev.txt"
 
 run-dev:
-	 python manage.py runserver
+	 ENVIRONMENT=.env python manage.py runserver
+
+start-database:
+	docker-compose up --detach
+
+stop-database:
+	docker-compose stop
+
+generate-migrations:
+	python manage.py makemigrations
+
+apply-migrations:
+	python manage.py migrate
+
+test:
+	pytest --cov . --cov-config=.coveragerc --cov-report term-missing
